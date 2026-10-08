@@ -25,6 +25,14 @@ const pool = mysql.createPool({
   ...connectionConfig,
 });
 
+// Một số MySQL cloud (vd. Aiven) bật sẵn chế độ ANSI (ANSI_QUOTES, PIPES_AS_CONCAT...),
+// làm các câu SQL viết cho MySQL mặc định chạy sai. Ép mỗi kết nối về sql_mode mặc định của MySQL 8.
+const DEFAULT_SQL_MODE =
+  "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION";
+pool.pool.on("connection", (connection) => {
+  connection.query(`SET SESSION sql_mode = '${DEFAULT_SQL_MODE}'`);
+});
+
 async function checkDbConnection() {
   if (isProduction && (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME)) {
     throw new Error("Missing required database environment variables");
