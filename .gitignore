@@ -1,0 +1,18 @@
+node_modules/
+dist/
+*.log
+
+# Environment files (chỉ commit file mẫu)
+.env
+.env.*
+!.env.example
+
+# File upload của người dùng
+uploads/*
+!uploads/.gitkeep
+
+# Bản nén / backup
+*.zip
+
+.DS_Store
+Thumbs.db

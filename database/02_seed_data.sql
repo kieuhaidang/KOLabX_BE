@@ -22,7 +22,7 @@ SET SQL_SAFE_UPDATES = 1;
 
 -- 1. SEED USERS (Password: password123)
 -- Hash below is for 'password123'
-SET @pass = '$2b$10$S9GjH8Mh.k6z7mQ9pDk6UeK8kQ7q1O6n1pG6rD7oH9iJ8kL7mN6O1';
+SET @pass = '$2a$10$YBMz/drG3pHfzn78yEDqq.8zCAChtt758AlbLg4U1yd5ZamHXNbju';
 
 INSERT INTO users (id, full_name, email, password_hash, role, status, is_verified) VALUES
 (1, 'System Owner', 'owner@kolab.com', @pass, 'owner', 'active', TRUE),

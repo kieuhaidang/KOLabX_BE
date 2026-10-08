@@ -19,6 +19,7 @@ router.post("/register", authSensitiveLimiter, authController.register);
 router.post("/login", authSensitiveLimiter, authController.login);
 router.post("/logout", authController.logout);
 router.get("/me", requireAuth, authController.me);
+router.patch("/me/theme", requireAuth, authController.updateTheme);
 router.get("/verify-email", authController.verifyEmail);
 router.post("/forgot-password", authLimiter, authController.forgotPassword);
 router.post("/reset-password", authController.resetPassword);

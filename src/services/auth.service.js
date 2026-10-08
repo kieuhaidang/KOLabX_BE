@@ -6,7 +6,7 @@ const mailService = require("./mail.service");
 
 async function findUserByEmail(email) {
   const [rows] = await pool.query(
-    "SELECT id, full_name, email, password_hash, role, is_verified, status FROM users WHERE email = ? LIMIT 1",
+    "SELECT id, full_name, email, password_hash, role, is_verified, status, theme_preference FROM users WHERE email = ? LIMIT 1",
     [email]
   );
   return rows[0] || null;
@@ -14,7 +14,7 @@ async function findUserByEmail(email) {
 
 async function findUserById(id) {
   const [rows] = await pool.query(
-    "SELECT id, full_name, email, role, is_verified FROM users WHERE id = ? LIMIT 1",
+    "SELECT id, full_name, email, role, is_verified, theme_preference FROM users WHERE id = ? LIMIT 1",
     [id]
   );
   return rows[0] || null;
@@ -208,7 +208,7 @@ async function loginUser({ email, password, remember = false }) {
   };
 
   const token = signAccessToken(safeUser, remember);
-  return { token, user: safeUser };
+  return { token, user: { ...safeUser, themePreference: user.theme_preference || null } };
 }
 
 async function getCurrentUser(userId) {
@@ -225,10 +225,17 @@ async function getCurrentUser(userId) {
     email: user.email,
     role: user.role,
     isVerified: Boolean(user.is_verified),
+    themePreference: user.theme_preference || null,
   };
 }
 
+async function updateThemePreference(userId, themeId) {
+  await pool.query("UPDATE users SET theme_preference = ? WHERE id = ?", [themeId, userId]);
+  return { themePreference: themeId };
+}
+
 module.exports = {
+  updateThemePreference,
   registerUser,
   loginUser,
   getCurrentUser,

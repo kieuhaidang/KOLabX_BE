@@ -18,8 +18,8 @@ SET SQL_SAFE_UPDATES = 1;
 
 -- 1. Bổ sung thêm Marketer (Bắt đầu từ ID 30)
 INSERT INTO users (id, full_name, email, password_hash, role, status, is_verified) VALUES
-(30, 'Đặng Tuyết Mai', 'mai.dang@highlandscoffee.com.vn', '$2b$10$S9GjH8Mh.k6z7mQ9pDk6UeK8kQ7q1O6n1pG6rD7oH9iJ8kL7mN6O1', 'marketer', 'active', TRUE),
-(31, 'Trần Thế Anh', 'anh.tran@grab.com', '$2b$10$S9GjH8Mh.k6z7mQ9pDk6UeK8kQ7q1O6n1pG6rD7oH9iJ8kL7mN6O1', 'marketer', 'active', TRUE);
+(30, 'Đặng Tuyết Mai', 'mai.dang@highlandscoffee.com.vn', '$2a$10$YBMz/drG3pHfzn78yEDqq.8zCAChtt758AlbLg4U1yd5ZamHXNbju', 'marketer', 'active', TRUE),
+(31, 'Trần Thế Anh', 'anh.tran@grab.com', '$2a$10$YBMz/drG3pHfzn78yEDqq.8zCAChtt758AlbLg4U1yd5ZamHXNbju', 'marketer', 'active', TRUE);
 
 INSERT INTO marketer_profiles (user_id, company_name, brand_name, industry, bio, website) VALUES
 (30, 'Highlands Coffee', 'Highlands', 'Food & Beverage', 'Thương hiệu cà phê quốc dân của người Việt.', 'https://highlandscoffee.com.vn'),

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "KOLab backend API",
   "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"

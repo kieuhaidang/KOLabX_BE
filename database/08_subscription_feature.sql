@@ -45,11 +45,11 @@ DROP PROCEDURE IF EXISTS AddSubscriptionColumns;
 DELIMITER //
 CREATE PROCEDURE AddSubscriptionColumns()
 BEGIN
-    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'payments' AND COLUMN_NAME = 'payment_type') THEN
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'payments' AND COLUMN_NAME = 'payment_type') THEN
         ALTER TABLE payments ADD COLUMN payment_type ENUM('booking', 'subscription') DEFAULT 'booking' AFTER amount;
     END IF;
     
-    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'payments' AND COLUMN_NAME = 'subscription_plan_id') THEN
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'payments' AND COLUMN_NAME = 'subscription_plan_id') THEN
         ALTER TABLE payments ADD COLUMN subscription_plan_id INT DEFAULT NULL AFTER payment_type;
         ALTER TABLE payments ADD CONSTRAINT fk_payments_subscription_plan FOREIGN KEY (subscription_plan_id) REFERENCES subscription_plans(id) ON DELETE SET NULL;
     END IF;

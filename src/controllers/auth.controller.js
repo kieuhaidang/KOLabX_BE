@@ -147,7 +147,26 @@ async function me(req, res, next) {
   }
 }
 
+// Chỉ kiểm tra định dạng id; danh sách theme nằm ở frontend (src/theme/themes.ts),
+// id không còn tồn tại sẽ được frontend tự đưa về theme mặc định.
+const THEME_ID_PATTERN = /^[a-z0-9-]{1,32}$/;
+
+async function updateTheme(req, res, next) {
+  try {
+    const { themeId } = req.body || {};
+    if (themeId !== null && (typeof themeId !== "string" || !THEME_ID_PATTERN.test(themeId))) {
+      return res.status(400).json({ message: "Theme không hợp lệ" });
+    }
+
+    const result = await authService.updateThemePreference(req.user.id, themeId);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
+  updateTheme,
   register,
   login,
   logout,

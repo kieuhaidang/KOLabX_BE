@@ -9,7 +9,7 @@ CREATE PROCEDURE AlterCampaignsSchema()
 BEGIN
     ALTER TABLE campaigns MODIFY COLUMN status ENUM('draft', 'scheduled', 'open', 'paused', 'in_progress', 'completed', 'cancelled', 'pending_payment') DEFAULT 'draft';
     
-    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'campaigns' AND COLUMN_NAME = 'remaining_budget') THEN
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'campaigns' AND COLUMN_NAME = 'remaining_budget') THEN
         ALTER TABLE campaigns ADD COLUMN remaining_budget DECIMAL(12,2) DEFAULT 0.00 AFTER budget;
     END IF;
 END //
@@ -22,7 +22,7 @@ DROP PROCEDURE IF EXISTS AlterPaymentsPaymentType;
 DELIMITER //
 CREATE PROCEDURE AlterPaymentsPaymentType()
 BEGIN
-    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'payments' AND COLUMN_NAME = 'payment_type') THEN
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'payments' AND COLUMN_NAME = 'payment_type') THEN
         ALTER TABLE payments ADD COLUMN payment_type ENUM('booking', 'subscription', 'campaign') DEFAULT 'booking' AFTER amount;
     ELSE
         ALTER TABLE payments MODIFY COLUMN payment_type ENUM('booking', 'subscription', 'campaign') DEFAULT 'booking';
@@ -37,7 +37,7 @@ DROP PROCEDURE IF EXISTS AddCampaignIdToPayments;
 DELIMITER //
 CREATE PROCEDURE AddCampaignIdToPayments()
 BEGIN
-    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'payments' AND COLUMN_NAME = 'campaign_id') THEN
+    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'payments' AND COLUMN_NAME = 'campaign_id') THEN
         ALTER TABLE payments ADD COLUMN campaign_id INT DEFAULT NULL AFTER booking_id;
         ALTER TABLE payments ADD CONSTRAINT fk_payments_campaign FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL;
     END IF;
